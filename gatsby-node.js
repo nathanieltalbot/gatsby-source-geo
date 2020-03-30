@@ -29,7 +29,7 @@ exports.sourceNodes = (
       parent: null,
       children: [],
       internal: {
-        type: `${name}`,
+        type: `${name}Layer`,
 				content: nodeContent,
         contentDigest: createContentDigest(proxy_layer),
       },
