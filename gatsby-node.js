@@ -10,6 +10,7 @@ exports.sourceNodes = (
   // Gatsby adds a configOption that's not needed for this plugin, delete it
   delete configOptions.plugins
 
+
   const processLayer = (layer) => {
     // Creating a proxy for the layer because the fields property, set by
     // OGR is reserved for use by gatsby
@@ -19,14 +20,16 @@ exports.sourceNodes = (
     proxy_layer.srs_wkt = layer.srs.toWKT();
     proxy_layer.srs_proj4 = layer.srs.toProj4();
     proxy_layer.srs_xml = layer.srs.toXML();
+    proxy_layer.features = layer.features.map((feature) => processFeature(feature, layer))
     const nodeId = createNodeId(`geo-layer-${layer.name}`);
     const nodeContent = JSON.stringify(proxy_layer);
+    const name = layer.name.replace(/\s/g, '');
     const nodeData = Object.assign({}, proxy_layer, {
       id: nodeId,
       parent: null,
       children: [],
       internal: {
-        type: `geoLayer`,
+        type: `${name}`,
 				content: nodeContent,
         contentDigest: createContentDigest(proxy_layer),
       },
@@ -34,6 +37,8 @@ exports.sourceNodes = (
     return nodeData;
   }
 
+  //TODO -- two ways to solve this--
+  // -> make two different parent nodes for each datasource -- if they don't agree, 
   const processFeature = (feature, layer) => {
     // Creating a proxy for the feature because the fields property, set by
     // OGR is reserved for use by gatsby
@@ -61,15 +66,8 @@ exports.sourceNodes = (
       id: nodeId,
       geometry: proxy_feature.geometry,
       featureFields: proxy_feature.featureFields,
-      parent: null,
-      children: [],
-      internal: {
-        type: `geoFeature`,
-        content: nodeContent,
-        contentDigest: createContentDigest(proxy_feature),
-      },
     });
-    return nodeData;
+    return proxy_feature;
   }
 
   var gdal = require("gdal");
@@ -106,10 +104,6 @@ exports.sourceNodes = (
     else {
       const layerNode = processLayer(layer);
       createNode(layerNode);
-      layer.features.forEach(function(feature) {
-        const featureNode = processFeature(feature, layer);
-        createNode(featureNode);
-      });
     }
   });
 
