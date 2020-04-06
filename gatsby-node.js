@@ -1,6 +1,17 @@
 const fetch = require("node-fetch")
 const queryString = require("query-string")
 
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+
+  const typeDefs = `
+    type GeoJSON implements Node {
+      name: String
+    }
+  `
+  createTypes(typeDefs)
+}
+
 exports.sourceNodes = (
   { actions, createNodeId, createContentDigest },
   configOptions
