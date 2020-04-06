@@ -34,7 +34,9 @@ exports.sourceNodes = (
     proxy_layer.features = layer.features.map((feature) => processFeature(feature, layer))
     const nodeId = createNodeId(`geo-layer-${layer.name}`);
     const nodeContent = JSON.stringify(proxy_layer);
-    const name = layer.name.replace(/\s/g, '');
+    var path = require('path');
+    var filename = path.basename(configOptions.path);
+    const name = filename.replace(/\s/g, '');
     console.log(name)
     const nodeData = Object.assign({}, proxy_layer, {
       id: nodeId,
