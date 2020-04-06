@@ -36,7 +36,7 @@ exports.sourceNodes = (
     const nodeContent = JSON.stringify(proxy_layer);
     var path = require('path');
     var filename = path.basename(configOptions.path);
-    const name = filename.replace(/\s/g, '');
+    const name = filename.replace(/\s/g, '').replace(/.*/g, '');
     console.log(name)
     const nodeData = Object.assign({}, proxy_layer, {
       id: nodeId,
