@@ -21,12 +21,13 @@ exports.sourceNodes = (
     proxy_layer.srs_xml = layer.srs.toXML();
     const nodeId = createNodeId(`geo-layer-${layer.name}`);
     const nodeContent = JSON.stringify(proxy_layer);
+    const name = layer.name.replace(/\s/g, '');
     const nodeData = Object.assign({}, proxy_layer, {
       id: nodeId,
       parent: null,
       children: [],
       internal: {
-        type: `geoLayer`,
+        type: `${name}geoLayer`,
 				content: nodeContent,
         contentDigest: createContentDigest(proxy_layer),
       },
@@ -57,6 +58,7 @@ exports.sourceNodes = (
 
     const nodeId = createNodeId(`geo-${feature.fid}`)
     const nodeContent = JSON.stringify(proxy_feature)
+    const name = layer.name.replace(/\s/g, '');
     const nodeData = Object.assign({}, proxy_feature, {
       id: nodeId,
       geometry: proxy_feature.geometry,
@@ -64,7 +66,7 @@ exports.sourceNodes = (
       parent: null,
       children: [],
       internal: {
-        type: `geoFeature`,
+        type: `${name}geoFeature`,
         content: nodeContent,
         contentDigest: createContentDigest(proxy_feature),
       },
