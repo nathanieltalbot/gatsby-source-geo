@@ -35,6 +35,7 @@ exports.sourceNodes = (
     const nodeId = createNodeId(`geo-layer-${layer.name}`);
     const nodeContent = JSON.stringify(proxy_layer);
     const name = layer.name.replace(/\s/g, '');
+    console.log(name)
     const nodeData = Object.assign({}, proxy_layer, {
       id: nodeId,
       parent: null,
