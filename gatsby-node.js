@@ -35,7 +35,7 @@ exports.sourceNodes = (
     const nodeId = createNodeId(`geo-layer-${layer.name}`);
     const nodeContent = JSON.stringify(proxy_layer);
     var path = require('path');
-    var filename = path.basename(configOptions.path).replace(/\s/g, '');
+    var filename = path.basename(configOptions.path).replace(/\s/g, '').replace("_", "");
     const name = filename.split('.').slice(0, -1).join('.')
     name
     console.log(name)
